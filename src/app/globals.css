@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #131b21;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+
+  /* PetSystem design system palette */
+  --color-royal-blue: #2563eb;
+  --color-dodger-blue: #159af9;
+  --color-platinum: #f1f5f9;
+  --color-spring-green: #15f974;
+  --color-ink-black: #131b21;
+  --color-electric-indigo: #7415f9;
+  --color-pumpkin-spice: #f97316;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+}
