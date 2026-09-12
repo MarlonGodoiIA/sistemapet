@@ -33,5 +33,84 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  consultas Consulta[] @relation("VeterinarioConsultas")
+
   @@map("users")
+}
+
+model Cliente {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  address   String?
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pets Pet[]
+
+  @@map("clientes")
+}
+
+model Pet {
+  id        String    @id @default(cuid())
+  name      String
+  species   String
+  breed     String?
+  birthDate DateTime?
+  weightKg  Float?
+  notes     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  clienteId String
+  cliente   Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+
+  consultas Consulta[]
+
+  @@map("pets")
+}
+
+enum ConsultaStatus {
+  AGENDADA
+  EM_ATENDIMENTO
+  CONCLUIDA
+  CANCELADA
+}
+
+model Consulta {
+  id          String         @id @default(cuid())
+  dataHora    DateTime
+  motivo      String
+  diagnostico String?
+  prescricao  String?
+  status      ConsultaStatus @default(AGENDADA)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  petId String
+  pet   Pet @relation(fields: [petId], references: [id], onDelete: Cascade)
+
+  veterinarioId String
+  veterinario   User @relation("VeterinarioConsultas", fields: [veterinarioId], references: [id])
+
+  @@map("consultas")
+}
+
+enum TipoTransacao {
+  RECEITA
+  DESPESA
+}
+
+model Transacao {
+  id        String        @id @default(cuid())
+  tipo      TipoTransacao
+  descricao String
+  valor     Float
+  categoria String?
+  data      DateTime      @default(now())
+  createdAt DateTime      @default(now())
+
+  @@map("transacoes")
 }

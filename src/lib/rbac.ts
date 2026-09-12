@@ -28,3 +28,12 @@ export async function checkRole(allowed: Role[]): Promise<RoleCheck> {
   const session = await requireSession();
   return { allowed: allowed.includes(session.role), session };
 }
+
+/** Para uso em server actions: interrompe com erro se o perfil não tiver permissão. */
+export async function requireRole(allowed: Role[]): Promise<SessionPayload> {
+  const session = await requireSession();
+  if (!allowed.includes(session.role)) {
+    throw new Error("Você não tem permissão para executar esta ação.");
+  }
+  return session;
+}
